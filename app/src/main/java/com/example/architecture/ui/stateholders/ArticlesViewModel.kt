@@ -9,9 +9,7 @@ import com.example.architecture.domain.model.ArticleWithAuthor
 import com.example.architecture.domain.usecases.ArticlesWithAuthorsUseCase
 import com.example.architecture.ui.model.ArticleItemModel
 import kotlinx.coroutines.launch
-
-private const val ARTICLE_TEXT_DISPLAY_LENGTH = 300
-private const val ARTICLE_TOO_LONG_DOTS = "..."
+import java.util.Locale
 
 /**
  * The view model for article list.
@@ -60,14 +58,23 @@ class ArticlesViewModel(
      * changes in the stored data. Data will be updated through [articles] LiveData.
      */
     fun onBookmarkPressed(article: ArticleItemModel) {
-        articleRepository.changeArticleBookmarkedState(article.id, !article.isBookmarked)
+        viewModelScope.launch {
+            articleRepository.changeArticleBookmarkedState(article.id, !article.isBookmarked)
+        }
     }
 
     /**
      * Handles delete action: calls the repository to make changes in the stored data.
+     * Data will be updated through [articles] LiveData.
      */
     fun onDeletePressed(article: ArticleItemModel) {
-        articleRepository.deleteArticle(article.id)
+        viewModelScope.launch {
+            articleRepository.deleteArticle(article.id)
+        }
+    }
+
+    override fun onCleared() { // you can read JavaDoc for this method by pressing Ctrl+Q or Cmd+J
+        articlesWithAuthorsUseCase.cancelAllOperations() // nobody will use it after onCleared.
     }
 
     /**
@@ -82,17 +89,17 @@ class ArticlesViewModel(
     )
 
     /**
-     * Formats the text for the displaying.
-     * This is just for demo purposes, same effect could be achieved by using ellipsize property
-     * of the TextView.
+     * @return the text to display as article's body.
+     *
+     * This is just for demo purposes,
+     * it would be better idea to store title and text in separate fields.
      */
-    private fun getArticleText(article: Article): String {
-        val withoutTitle = article.text.substringAfter(' ')
-        if (withoutTitle.length <= ARTICLE_TEXT_DISPLAY_LENGTH) {
-            return withoutTitle
+    private fun getArticleText(article: Article): String = article.text
+        .substringAfter(' ')
+        .replaceFirstChar {  // capitalize first char
+            if (it.isLowerCase())
+                it.titlecase(Locale.getDefault())
+            else
+                it.toString()
         }
-        return withoutTitle.substring(
-            0..ARTICLE_TEXT_DISPLAY_LENGTH - ARTICLE_TOO_LONG_DOTS.length
-        ) + ARTICLE_TOO_LONG_DOTS
-    }
 }

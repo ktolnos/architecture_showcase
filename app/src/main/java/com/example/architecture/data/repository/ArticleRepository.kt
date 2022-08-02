@@ -52,18 +52,27 @@ class ArticleRepository(
      * Note that this method could have done modifications to database
      * or perform network calls if necessary.
      */
-    fun changeArticleBookmarkedState(articleId: Int, bookmarked: Boolean) {
-        _articles.value = articles.value.orEmpty().map { article ->
-            if (article.id == articleId) article.copy(isBookmarked = bookmarked)
-            else article
+    suspend fun changeArticleBookmarkedState(articleId: Int, bookmarked: Boolean) {
+        // we should make changes on background thread, articles list can be huge
+        val newArticles = withContext(Dispatchers.Default) {
+            articles.value.orEmpty().map { article ->
+                if (article.id == articleId) article.copy(isBookmarked = bookmarked)
+                else article
+            }
         }
+        _articles.value = newArticles // setValue can only be called from the main (UI) thread.
     }
 
     /**
      * Delete an article with id=[articleId].
      * Same as above, list is unmodifieable, so we have to create a new one.
      */
-    fun deleteArticle(articleId: Int) {
-        _articles.value = articles.value.orEmpty().filter { it.id != articleId }
+    suspend fun deleteArticle(articleId: Int) {
+        // we should make changes on background thread, articles list can be huge
+        withContext(Dispatchers.Default) {
+            // here we use postValue, it can be called from any thread.
+            // It is similar to Handler.post
+            _articles.postValue(articles.value.orEmpty().filter { it.id != articleId })
+        }
     }
 }
