@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -111,6 +112,8 @@ class ArticlesWithAuthorsUseCase(
         authors.forEach { author ->
             authorIdToAuthor[author.id] = author
         }
+        if (!combineCoroutineScope.isActive) return emptyList() // by default sequential
+        // computations can't be cancelled, we need to manually check if current Job is active.
 
         val articles = articleRepository.articles.value.orEmpty()
         return articles.map { article ->
