@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.architecture.R
 import com.example.architecture.ui.view.ArticlesFragment
-import com.example.architecture.ui.view.ArticlesListViewController
+import com.example.architecture.ui.view.ArticlesViewController
 
 /**
  * Container for all Fragment-View-scoped classes. This container is created after fragment's
@@ -31,7 +31,7 @@ class ArticlesFragmentViewComponent(
     /**
      * Public getter because we want to access this class from the Fragment.
      */
-    val articlesListViewController = ArticlesListViewController(
+    val articlesViewController = ArticlesViewController(
         fragmentComponent.fragment.requireActivity(),
         recycler,
         fragmentComponent.adapter,

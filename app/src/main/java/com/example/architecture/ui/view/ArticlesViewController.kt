@@ -13,7 +13,7 @@ import com.example.architecture.ui.stateholders.ArticlesViewModel
  * Fragment-View-scoped: will be created after onCreateView and destroyed after onDestroyView.
  * Can reference views.
  */
-class ArticlesListViewController(
+class ArticlesViewController(
     private val activity: Activity,
     private val recyclerView: RecyclerView,
     private val adapter: ArticlesListAdapter,
