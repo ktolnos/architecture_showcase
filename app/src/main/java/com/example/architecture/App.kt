@@ -10,12 +10,7 @@ import com.example.architecture.ioc.ApplicationComponent
  */
 class App : Application() {
 
-    lateinit var applicationComponent: ApplicationComponent
-
-    override fun onCreate() {
-        super.onCreate()
-        applicationComponent = ApplicationComponent()
-    }
+    val applicationComponent by lazy { ApplicationComponent() }
 
     companion object {
         /**

@@ -21,7 +21,16 @@ class ArticlesFragmentViewComponent(
     root: View,
     lifecycleOwner: LifecycleOwner,
 ) {
+    /**
+     * If there were more views, logic for finding and accessing them could be moved to separate
+     * class e.g. ArticlesFragmentViewHolder. Alternatively, we could use Data Binding
+     * https://developer.android.com/topic/libraries/data-binding
+     */
     private val recycler: RecyclerView = root.findViewById(R.id.articles_recycler)
+
+    /**
+     * Public getter because we want to access this class from the Fragment.
+     */
     val articlesListViewController = ArticlesListViewController(
         fragmentComponent.fragment.requireActivity(),
         recycler,

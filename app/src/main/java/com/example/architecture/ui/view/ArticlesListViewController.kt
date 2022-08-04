@@ -20,6 +20,10 @@ class ArticlesListViewController(
     private val lifecycleOwner: LifecycleOwner,
     private val viewModel: ArticlesViewModel,
 ) {
+    /**
+     * Connects [recyclerView] with [adapter] and [adapter] with the data from [viewModel].
+     * This method could have been called directly from the constructor of this class.
+     */
     fun setUpArticlesList() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
