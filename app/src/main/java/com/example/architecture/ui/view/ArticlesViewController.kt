@@ -1,9 +1,11 @@
 package com.example.architecture.ui.view
 
 import android.app.Activity
+import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.architecture.R
 import com.example.architecture.ui.stateholders.ArticlesViewModel
 
 /**
@@ -15,11 +17,18 @@ import com.example.architecture.ui.stateholders.ArticlesViewModel
  */
 class ArticlesViewController(
     private val activity: Activity,
-    private val recyclerView: RecyclerView,
+    rootView: View,
     private val adapter: ArticlesListAdapter,
     private val lifecycleOwner: LifecycleOwner,
     private val viewModel: ArticlesViewModel,
 ) {
+    /**
+     * If there were more views, logic for finding and accessing them could be moved to separate
+     * class e.g. ArticlesFragmentViewHolder. Alternatively, we could use Data Binding
+     * https://developer.android.com/topic/libraries/data-binding
+     */
+    private val recyclerView: RecyclerView = rootView.findViewById(R.id.articles_recycler)
+
     /**
      * Connects [recyclerView] with [adapter] and [adapter] with the data from [viewModel].
      * This method could have been called directly from the constructor of this class.

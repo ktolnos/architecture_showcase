@@ -2,8 +2,6 @@ package com.example.architecture.ioc
 
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.RecyclerView
-import com.example.architecture.R
 import com.example.architecture.ui.view.ArticlesFragment
 import com.example.architecture.ui.view.ArticlesViewController
 
@@ -22,18 +20,11 @@ class ArticlesFragmentViewComponent(
     lifecycleOwner: LifecycleOwner,
 ) {
     /**
-     * If there were more views, logic for finding and accessing them could be moved to separate
-     * class e.g. ArticlesFragmentViewHolder. Alternatively, we could use Data Binding
-     * https://developer.android.com/topic/libraries/data-binding
-     */
-    private val recycler: RecyclerView = root.findViewById(R.id.articles_recycler)
-
-    /**
      * Public getter because we want to access this class from the Fragment.
      */
     val articlesViewController = ArticlesViewController(
         fragmentComponent.fragment.requireActivity(),
-        recycler,
+        root,
         fragmentComponent.adapter,
         lifecycleOwner,
         fragmentComponent.viewModel,
