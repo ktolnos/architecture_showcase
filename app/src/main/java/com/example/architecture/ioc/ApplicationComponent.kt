@@ -17,11 +17,12 @@ class ApplicationComponent {
     private val dataSource = HardCodedDataSource()
     private val articleRepository = ArticleRepository(dataSource)
     private val authorRepository = AuthorRepository(dataSource)
+    private val articlesWithAuthorsUseCaseFactory = { // creates new UseCase instance each time
+        ArticlesWithAuthorsUseCase(articleRepository, authorRepository)
+    }
 
     /**
      * Public getter allows all other classes to use same instance from [ApplicationComponent].
      */
-    val viewModelFactory = ViewModelFactory(articleRepository) {
-        ArticlesWithAuthorsUseCase(articleRepository, authorRepository)
-    }
+    val viewModelFactory = ViewModelFactory(articleRepository, articlesWithAuthorsUseCaseFactory)
 }
