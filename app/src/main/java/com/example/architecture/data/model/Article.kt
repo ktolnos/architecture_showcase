@@ -9,7 +9,7 @@ package com.example.architecture.data.model
 data class Article(
     val id: Int,
     val text: String,
-    val isBookmarked: Boolean = false,
+    val isBookmarked: Boolean,
     val authorId: Int,
 )
 

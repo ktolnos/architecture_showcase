@@ -43,11 +43,16 @@ class ArticlesViewModel(
     }
 
     init {
-        /**
-         * Start loading the articles and authors as soon as this ViewModel is created.
-         * [viewModelScope] will automatically cancel an execution if the ViewModel
-         * is destroyed (onClear).
-         */
+        // Start loading the articles and authors as soon as this ViewModel is created.
+        updateArticles()
+    }
+
+    /**
+     * Update articles list.
+     * [viewModelScope] will automatically cancel an execution if the ViewModel
+     * is destroyed (onClear).
+     */
+    fun updateArticles() {
         viewModelScope.launch {
             articlesWithAuthorsUseCase.updateArticlesAndAuthors()
         }

@@ -52,7 +52,7 @@ class ArticlesFragment : Fragment() {
             root = view,
             lifecycleOwner = viewLifecycleOwner,
         ).apply {
-            articlesViewController.setUpArticlesList()
+            articlesViewController.setUpViews()
         }
         return view
     }
