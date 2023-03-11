@@ -14,6 +14,7 @@ Repositories ([`ArticleRepository`](app/src/main/java/com/example/architecture/d
 ([`ArticlesViewModel`](app/src/main/java/com/example/architecture/ui/stateholders/ArticlesViewModel.kt) is observing this `MediatorLiveData`. It maps `ArticlesWithAuthor` into `ArticleItemModel` using `Transformations.map` to prepare the data for displaying.
 Classes that are displaying data observe the `LiveData` of the `ViewModel`. There is an [`ArticlesFragment`](app/src/main/java/com/example/architecture/ui/view/ArticlesFragment.kt) that delegates most of its work to [`ArticlesViewController`](app/src/main/java/com/example/architecture/ui/view/ArticlesViewController.kt) to move code out of the system-managed classes.
 [`ArticlesViewController`](app/src/main/java/com/example/architecture/ui/view/ArticlesViewController.kt) observes changes of the `ViewModel` and pushes new data int [`ArticlesListAdapter`](app/src/main/java/com/example/architecture/ui/view/ArticlesListAdapter.kt).
+  
 ![](pictures/data_flow_interaction.png)
 User events and data loading requests are propagated upwards using the usual and `suspend` method calls. Whenever data changes, all classes get their updated version via `LiveData` subscriptions, and the user interface is updated automatically.
 A single source of truth ensures that all data is consistent and up-to-date.
